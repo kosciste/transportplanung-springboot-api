@@ -1,6 +1,9 @@
 package ch.viollier.transportplanung.location;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
@@ -11,21 +14,30 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="dtype", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name="type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "the name cannot be empty")
     private String name;
+    @NotBlank(message = "the street cannot be empty")
     private String street;
+    @NotBlank(message = "the city cannot be empty")
     private String city;
+    @Min(value=1000,message = "the zip must be a valid swiss zip number")
+    @Max(value=9999,message = "the zip must be a valid swiss zip number")
     private Integer zip;
-    private String contact;
-    private String phone;
-    private String email;
 
     public Location() {}
+
+    public Location(String name, String street, String city, Integer zip) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.zip = zip;
+    }
 
     public Long getId() {
         return id;
@@ -67,41 +79,17 @@ public abstract class Location {
         this.zip = zip;
     }
 
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return Objects.equals(id, location.id) && Objects.equals(name, location.name) && Objects.equals(street, location.street) && Objects.equals(city, location.city) && Objects.equals(zip, location.zip) && Objects.equals(contact, location.contact) && Objects.equals(phone, location.phone) && Objects.equals(email, location.email);
+        return Objects.equals(id, location.id) && Objects.equals(name, location.name) && Objects.equals(street, location.street) && Objects.equals(city, location.city) && Objects.equals(zip, location.zip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, street, city, zip, contact, phone, email);
+        return Objects.hash(id, name, street, city, zip);
     }
 
     @Override
@@ -112,9 +100,6 @@ public abstract class Location {
                 ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", zip=" + zip +
-                ", contact='" + contact + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
                 '}';
     }
 }

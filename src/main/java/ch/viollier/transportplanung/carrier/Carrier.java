@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
@@ -20,32 +22,32 @@ public class Carrier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Der Name darf nicht leer sein")
+    @NotBlank(message = "the name cannot be empty")
     private String name;
 
-    @NotBlank(message = "Die Strasse darf nicht leer sein")
+    @NotBlank(message = "the street cannot be empty\"")
     private String street;
 
-    @NotBlank(message = "Die Stadt darf nicht leer sein")
+    @NotBlank(message = "the city cannot be empty\"")
     private String city;
 
-    @NotBlank(message = "Die PLZ darf nicht leer sein")
+    @Min(value=1000,message = "the zip must be a valid swiss zip number")
+    @Max(value=9999,message = "the zip must be a valid swiss zip number")
     private Integer zip;
 
-    @NotBlank(message = "Der Kontakt darf nicht leer sein")
+    @NotBlank(message = "the contact cannot be empty")
     private String contact;
 
-    @NotBlank(message = "Die Telefonnumer darf nicht leer sein")
+    @NotBlank(message = "the phone number cannot be empty")
     private String phone;
 
-    @NotBlank(message = "Die E-mail darf nicht leer sein")
-    @Email(message = "Es muss eine gültige Mail-Adresse eingegeben werden")
+    @NotBlank(message = "the email cannot be empty\"")
+    @Email(message = "a valid email adress must be provided")
     private String email;
 
 
-    public Carrier(Long id, String name, String street, String city,
+    public Carrier(String name, String street, String city,
                    Integer zip, String contact, String phone, String email) {
-        this.id = id;
         this.name = name;
         this.street = street;
         this.city = city;

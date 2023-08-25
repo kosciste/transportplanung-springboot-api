@@ -36,7 +36,7 @@ public class CarrierService {
      * This method returns a specific carrier selected
      * by the id
      * @param id the id of the carrier
-     * @return returns an optional carrier
+     * @return returns carrier
      * @throws EntityNotFoundException
      */
     public Carrier getCarrierById(Long id) throws EntityNotFoundException{
